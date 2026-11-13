@@ -20,6 +20,7 @@ version = 2
 ignore = [
     { id = "RUSTSEC-2024-0436", reason = "paste is a transitive dep of soroban-env-host v25.0.1 and ark-ff v0.4.2. Maintenance-only notice, no CVE or exploit. No upgrade path exists within soroban-sdk 25.3.0." },
     { id = "RUSTSEC-2024-0388", reason = "derivative is a transitive dep of ark-ec v0.4.2 and ark-ff v0.4.2, pulled in by soroban-env-host v25.0.1. Maintenance-only notice, no CVE or exploit. No upgrade path within the ark 0.4.x series used by soroban-env-host." },
+    { id = "RUSTSEC-2026-0387", reason = "crypto-bigint 0.5.5 is a transitive dep of soroban-env-host v27.0.1 via elliptic-curve/k256. No upgrade path exists within soroban-env-host v27.0.1." },
 ]
 
 [bans]
