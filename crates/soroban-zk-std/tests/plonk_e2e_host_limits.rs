@@ -316,6 +316,7 @@ fn assert_within_limits(p: &Profile, name: &str) {
 fn satisfying_batch_is_accepted_end_to_end() {
     let env = Env::default();
     for k in 1..=MAX_K {
+        env.cost_estimate().budget().reset_default();
         let f = fixture::batch(k);
         let inputs = f.inputs();
         let outcome = verify_plonk_kzg(&env, &inputs, G2Affine::generator());
@@ -333,6 +334,7 @@ fn satisfying_batch_is_accepted_end_to_end() {
 fn tampered_batch_is_rejected_not_errored() {
     let env = Env::default();
     for k in 1..=MAX_K {
+        env.cost_estimate().budget().reset_default();
         let f = fixture::tampered(k);
         let inputs = f.inputs();
         let outcome = verify_plonk_kzg(&env, &inputs, G2Affine::generator());
