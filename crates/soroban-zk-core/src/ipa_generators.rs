@@ -61,7 +61,8 @@ const IDENTITY: G1Affine = G1Affine {
 /// which point is selected.
 #[inline(always)]
 pub fn ct_select_affine(choice: u128, a: G1Affine, b: G1Affine) -> G1Affine {
-    let mask = u256::from(0u128).wrapping_sub(u256::from(choice));
+    let choice_bit = (choice != 0) as u128;
+    let mask = u256::from(0u128).wrapping_sub(u256::from(choice_bit));
     let not_mask = !mask;
     G1Affine {
         x: (mask & a.x) | (not_mask & b.x),
