@@ -2,10 +2,16 @@
 mod tests {
     use crate::*;
 
+    fn any_u256() -> u256 {
+        let hi = kani::any::<u128>();
+        let lo = kani::any::<u128>();
+        u256::from_words(hi, lo)
+    }
+
     #[kani::proof]
     fn verify_fr_add() {
-        let a = kani::any::<u256>();
-        let b = kani::any::<u256>();
+        let a = any_u256();
+        let b = any_u256();
         kani::assume(Bn254::is_valid_scalar(a));
         kani::assume(Bn254::is_valid_scalar(b));
 
@@ -15,8 +21,8 @@ mod tests {
 
     #[kani::proof]
     fn verify_fq_add() {
-        let a = kani::any::<u256>();
-        let b = kani::any::<u256>();
+        let a = any_u256();
+        let b = any_u256();
         kani::assume(Bn254::is_valid_fq(a));
         kani::assume(Bn254::is_valid_fq(b));
 
@@ -26,8 +32,8 @@ mod tests {
 
     #[kani::proof]
     fn verify_fq_sub() {
-        let a = kani::any::<u256>();
-        let b = kani::any::<u256>();
+        let a = any_u256();
+        let b = any_u256();
         kani::assume(Bn254::is_valid_fq(a));
         kani::assume(Bn254::is_valid_fq(b));
 
@@ -37,7 +43,7 @@ mod tests {
 
     #[kani::proof]
     fn verify_field_inversion() {
-        let a = kani::any::<u256>();
+        let a = any_u256();
         kani::assume(Bn254::is_valid_fq(a));
         kani::assume(a != u256::from(0u8));
 
@@ -48,7 +54,7 @@ mod tests {
 
     #[kani::proof]
     fn verify_tonelli_shanks_sqrt() {
-        let a = kani::any::<u256>();
+        let a = any_u256();
         kani::assume(Bn254::is_valid_fq(a));
 
         let root = Bn254::sqrt_fq(a);
@@ -64,8 +70,8 @@ mod tests {
     #[kani::proof]
     fn verify_montgomery_math() {
         // Mock verification of Montgomery math if it exists, otherwise just test mul
-        let a = kani::any::<u256>();
-        let b = kani::any::<u256>();
+        let a = any_u256();
+        let b = any_u256();
         kani::assume(Bn254::is_valid_fq(a));
         kani::assume(Bn254::is_valid_fq(b));
 
@@ -76,10 +82,10 @@ mod tests {
     #[kani::proof]
     fn verify_foreign_limbs() {
         // Mock verification for foreign limbs processing
-        let a = kani::any::<u256>();
+        let a = any_u256();
         kani::assume(a < u256::from(1u8) << 64);
 
-        let b = kani::any::<u256>();
+        let b = any_u256();
         kani::assume(b < u256::from(1u8) << 64);
 
         let c = a + b;
@@ -88,7 +94,7 @@ mod tests {
 
     #[kani::proof]
     fn verify_range_validation() {
-        let val = kani::any::<u256>();
+        let val = any_u256();
 
         // Exact 64-bit threshold testing via symbolic bounds
         if val == Bn254::FR_MODULUS {

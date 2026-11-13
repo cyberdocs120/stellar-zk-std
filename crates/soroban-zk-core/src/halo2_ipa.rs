@@ -98,7 +98,7 @@ impl IpaRoundChallenge {
     ///
     /// Returns `Err(ZkError::InvalidFieldElement)` if `u` is zero (non-invertible).
     pub fn from_scalar(u: u256) -> Result<Self, ZkError> {
-        if u == u256::from(0u8) {
+        if u == u256::from(0u8) || u >= Bn254::FR_MODULUS {
             return Err(ZkError::InvalidFieldElement);
         }
         let u_inv = Bn254::invert(u);

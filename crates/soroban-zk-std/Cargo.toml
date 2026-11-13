@@ -14,7 +14,7 @@ crate-type = ["lib"]
 
 [features]
 default = []
-std = ["soroban-sdk/hazmat-crypto"] # or however you want to name it
+std = ["soroban-sdk/hazmat-crypto", "dep:num-bigint"] # or however you want to name it
 # Enables the ZkContract contract entrypoints (for standalone contract deployment).
 contract = []
 # Use the pure-software (arkworks) pairing check instead of the native
@@ -32,6 +32,7 @@ required-features = ["std"]  # Only builds when "std" feature is enabled
 soroban-sdk = { workspace = true, features = ["hazmat-crypto", "alloc"] }
 ethnum = { workspace = true }
 soroban-zk-core = { workspace = true }
+num-bigint = { version = "0.5.1", default-features = false, optional = true }
 
 # Math & Crypto (Strictly no_std)
 
@@ -39,7 +40,6 @@ soroban-zk-core = { workspace = true }
 ark-bn254 = { version = "0.6.0", default-features = false, features = ["curve"] }
 ark-ff = { version = "0.6.0", default-features = false }
 ark-ec = { version = "0.6.0", default-features = false }
-num-bigint = { version = "0.5.1", default-features = false }
 
 [dev-dependencies]
 proptest = "1"
