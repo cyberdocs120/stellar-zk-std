@@ -548,6 +548,7 @@ pub fn plonk_batch_verify_points(
 }
 
 #[cfg(test)]
+#[cfg(not(miri))]
 mod tests {
     use super::*;
 

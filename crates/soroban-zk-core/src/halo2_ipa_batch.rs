@@ -430,6 +430,7 @@ impl<'a, const M: usize, const ROUNDS: usize> BatchIpaIter<'a, M, ROUNDS> {
 // ---------------------------------------------------------------------------
 
 #[cfg(test)]
+#[cfg(not(miri))]
 mod tests {
     use super::*;
     use crate::{

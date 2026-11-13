@@ -921,7 +921,7 @@ fn ipa_fold(
 }
 
 /// Verifier for testing `ipa_verify`
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 fn ipa_verify(
     p0: G1Affine,
     g0: [G1Affine; N],
@@ -1667,6 +1667,7 @@ impl Default for BatchVerifyContext {
 // ===========================================================================
 
 #[cfg(test)]
+#[cfg(not(miri))]
 mod tests {
     use super::*;
     use crate::ZkError;

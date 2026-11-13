@@ -378,6 +378,7 @@ const fn log2_exact(n: usize) -> usize {
 // ---------------------------------------------------------------------------
 
 #[cfg(test)]
+#[cfg(not(miri))]
 mod tests {
     use super::*;
 

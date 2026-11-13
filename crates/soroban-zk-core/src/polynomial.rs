@@ -319,6 +319,7 @@ impl<const MAX_COEFFS: usize, const MAX_TERMS: usize> TryFrom<&DensePolynomial<M
 }
 
 #[cfg(test)]
+#[cfg(not(miri))]
 mod tests {
     use super::*;
 

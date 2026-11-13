@@ -168,6 +168,10 @@ mod tests {
     use super::*;
 
     #[test]
+    #[cfg_attr(
+        miri,
+        ignore = "deliberately reads dropped memory to check volatile wipe"
+    )]
     fn sensitive_buffer_zeroes_on_drop() {
         // Use a u64 with a known sentinel value.
         let leaked_ptr: *const u64;

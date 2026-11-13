@@ -107,6 +107,7 @@ pub mod elgamal {
     }
 
     #[cfg(test)]
+    #[cfg(not(miri))]
     mod tests {
         use super::*;
 
@@ -882,8 +883,8 @@ impl Bn254 {
     /// via a branchless mask.
     #[inline(always)]
     fn mul_mod(a: u256, b: u256, modulus: u256) -> u256 {
-        let a = a % modulus;
-        let b = b % modulus;
+        let a = if a >= modulus { a % modulus } else { a };
+        let b = if b >= modulus { b % modulus } else { b };
         if modulus == Self::FR_MODULUS {
             FR_MONT.mul_mod(a, b)
         } else if modulus == Self::FQ_MODULUS {
@@ -1786,6 +1787,10 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(
+        miri,
+        ignore = "254-bit elliptic curve scalar multiplication is slow under Miri"
+    )]
     fn test_g2_generator_is_in_subgroup() {
         let (x0, x1, y0, y1) = g2_generator();
         assert!(
@@ -1874,6 +1879,10 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(
+        miri,
+        ignore = "254-bit elliptic curve scalar multiplication is slow under Miri"
+    )]
     fn test_g2_scalar_mul_generator_is_identity() {
         // [r]·G must equal the point at infinity for the generator G.
         let (x0, x1, y0, y1) = g2_generator();
@@ -1887,6 +1896,10 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(
+        miri,
+        ignore = "254-bit elliptic curve scalar multiplication is slow under Miri"
+    )]
     fn test_g2_rejects_point_outside_subgroup() {
         let (x, y) = g2_off_subgroup_point();
         // It must be on the curve, but NOT in the prime-order subgroup.

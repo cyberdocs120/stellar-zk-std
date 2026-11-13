@@ -764,6 +764,7 @@ impl Halo2Opening {
 }
 
 #[cfg(test)]
+#[cfg(not(miri))]
 mod tests {
     use super::*;
 

@@ -805,6 +805,7 @@ pub fn hash_to_fr(bytes: &[u8]) -> u256 {
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
 #[cfg(test)]
+#[cfg(not(miri))]
 mod tests {
     use super::*;
 

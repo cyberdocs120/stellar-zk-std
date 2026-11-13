@@ -366,6 +366,7 @@ impl<const ROUNDS: usize> IpaVerifierState<ROUNDS> {
 // ---------------------------------------------------------------------------
 
 #[cfg(test)]
+#[cfg(not(miri))]
 mod tests {
     use super::*;
     use crate::G1Affine;

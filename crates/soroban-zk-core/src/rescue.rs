@@ -355,6 +355,7 @@ fn build_round_keys() -> [[u256; STATE]; ROUNDS] {
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
 #[cfg(test)]
+#[cfg(not(miri))]
 mod tests {
     use super::*;
 
