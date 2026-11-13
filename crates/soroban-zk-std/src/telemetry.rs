@@ -261,10 +261,8 @@ pub fn emit_verification_event(
     // proof-system-specific tag.  Indexers can filter on just the first
     // topic to capture all ZK events, or narrow to a specific proof system
     // using both topics.
-    env.events().publish(
-        (symbol_short!("zk_verify"), proof_type.as_symbol()),
-        event,
-    );
+    env.events()
+        .publish((symbol_short!("zk_verify"), proof_type.as_symbol()), event);
 }
 
 // ── Unit tests ───────────────────────────────────────────────────────────────
@@ -272,6 +270,7 @@ pub fn emit_verification_event(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use soroban_sdk::testutils::Events;
     use soroban_sdk::Env;
 
     // ── estimate_cycle_cost ──────────────────────────────────────────────────
@@ -360,53 +359,89 @@ mod tests {
 
     // ── emit_verification_event (integration with Soroban test env) ──────────
 
+    #[soroban_sdk::contract]
+    struct TestTelemetryContract;
+
+    #[soroban_sdk::contractimpl]
+    impl TestTelemetryContract {
+        pub fn emit(env: Env, pt: ProofType, inputs: u32, pairs: u32) {
+            emit_verification_event(&env, pt, inputs, pairs);
+        }
+
+        pub fn emit_two(env: Env, pt1: ProofType, pt2: ProofType) {
+            emit_verification_event(&env, pt1, 1, 4);
+            emit_verification_event(&env, pt2, 4, 2);
+        }
+
+        pub fn emit_all_five(env: Env) {
+            let types = [
+                ProofType::Groth16,
+                ProofType::Halo2,
+                ProofType::Stark,
+                ProofType::Plonk,
+                ProofType::Bulletproofs,
+            ];
+            for pt in types {
+                emit_verification_event(&env, pt, 1, 0);
+            }
+        }
+    }
+
     #[test]
     fn emit_groth16_event_recorded_in_test_env() {
         let env = Env::default();
+        let id = env.register(TestTelemetryContract, ());
+        let client = TestTelemetryContractClient::new(&env, &id);
 
-        emit_verification_event(&env, ProofType::Groth16, 2, 4);
+        client.emit(&ProofType::Groth16, &2, &4);
 
         let events = env.events().all();
-        assert_eq!(events.len(), 1, "exactly one event should be emitted");
+        assert_eq!(
+            events.events().len(),
+            1,
+            "exactly one event should be emitted"
+        );
     }
 
     #[test]
     fn emit_stark_event_recorded_in_test_env() {
         let env = Env::default();
+        let id = env.register(TestTelemetryContract, ());
+        let client = TestTelemetryContractClient::new(&env, &id);
 
-        emit_verification_event(&env, ProofType::Stark, 8, 0);
+        client.emit(&ProofType::Stark, &8, &0);
 
         let events = env.events().all();
-        assert_eq!(events.len(), 1, "exactly one event should be emitted");
+        assert_eq!(
+            events.events().len(),
+            1,
+            "exactly one event should be emitted"
+        );
     }
 
     #[test]
     fn emit_multiple_events_are_all_recorded() {
         let env = Env::default();
+        let id = env.register(TestTelemetryContract, ());
+        let client = TestTelemetryContractClient::new(&env, &id);
 
-        // Simulate: one Groth16 and one Halo2 verification in the same call
-        emit_verification_event(&env, ProofType::Groth16, 1, 4);
-        emit_verification_event(&env, ProofType::Halo2, 4, 2);
+        // Simulate: one Groth16 and one Halo2 verification in the same contract call
+        client.emit_two(&ProofType::Groth16, &ProofType::Halo2);
 
         let events = env.events().all();
-        assert_eq!(events.len(), 2);
+        assert_eq!(events.events().len(), 2);
     }
 
     #[test]
     fn emit_does_not_panic_for_any_proof_type() {
         let env = Env::default();
-        let types = [
-            ProofType::Groth16,
-            ProofType::Halo2,
-            ProofType::Stark,
-            ProofType::Plonk,
-            ProofType::Bulletproofs,
-        ];
-        for pt in types {
-            emit_verification_event(&env, pt, 1, 0);
-        }
+        let id = env.register(TestTelemetryContract, ());
+        let client = TestTelemetryContractClient::new(&env, &id);
+
+        client.emit_all_five();
+
         // All five emitted successfully
-        assert_eq!(env.events().all().len(), 5);
+        assert_eq!(env.events().all().events().len(), 5);
     }
 
     // ── ProofType::as_symbol ─────────────────────────────────────────────────
@@ -425,7 +460,10 @@ mod tests {
         // All five symbols must be pairwise different
         for i in 0..syms.len() {
             for j in (i + 1)..syms.len() {
-                assert_ne!(syms[i], syms[j], "symbol collision between variants {i} and {j}");
+                assert_ne!(
+                    syms[i], syms[j],
+                    "symbol collision between variants {i} and {j}"
+                );
             }
         }
     }

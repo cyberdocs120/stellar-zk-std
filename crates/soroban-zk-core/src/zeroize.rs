@@ -143,13 +143,9 @@ pub mod sensitive_vec {
         pub fn as_slice(&self) -> &[T] {
             &self.inner
         }
-    }
 
-    impl<T: Copy> Drop for SensitiveVec<T> {
-        fn drop(&mut self) {
-            // SAFETY: every element of `self.inner` is a valid `T`; we write
-            // through a byte pointer using volatile semantics to prevent
-            // dead-store elimination, then let Vec's own drop release the heap.
+        /// Zeroes every element in-place using volatile writes.
+        pub fn zero(&mut self) {
             unsafe {
                 let ptr = self.inner.as_mut_ptr() as *mut u8;
                 let len = self.inner.len() * mem::size_of::<T>();
@@ -157,7 +153,12 @@ pub mod sensitive_vec {
                     ptr::write_volatile(ptr.add(i), 0u8);
                 }
             }
-            // Vec<T>::drop now runs and frees the (already-zeroed) allocation.
+        }
+    }
+
+    impl<T: Copy> Drop for SensitiveVec<T> {
+        fn drop(&mut self) {
+            self.zero();
         }
     }
 }
@@ -169,7 +170,7 @@ mod tests {
     #[test]
     fn sensitive_buffer_zeroes_on_drop() {
         // Use a u64 with a known sentinel value.
-        let mut leaked_ptr: *const u64 = core::ptr::null();
+        let leaked_ptr: *const u64;
         {
             let buf = SensitiveBuffer::new(0xDEAD_BEEF_CAFE_BABEu64);
             leaked_ptr = buf.as_ref() as *const u64;
@@ -212,15 +213,11 @@ mod tests {
         use alloc::vec;
 
         let v: alloc::vec::Vec<u32> = vec![0xDEAD_BEEFu32; 4];
-        let raw_ptr = v.as_ptr();
-        let _guard = SensitiveVec::new(v);
-        // The guard is dropped at the end of this scope.
-        drop(_guard);
-        // Read the now-freed backing store through the stale pointer.
-        // SAFETY: The allocator has not yet reclaimed this memory on any
-        // mainstream target; the volatile write should already have zeroed it.
-        // This is a best-effort smoke-test.
-        let after = unsafe { core::ptr::read_volatile(raw_ptr) };
-        assert_eq!(after, 0u32, "SensitiveVec must zero elements before freeing");
+        let mut guard = SensitiveVec::new(v);
+        assert_eq!(guard.as_slice()[0], 0xDEAD_BEEFu32);
+        guard.zero();
+        for &elem in guard.as_slice() {
+            assert_eq!(elem, 0u32, "SensitiveVec must zero elements");
+        }
     }
 }

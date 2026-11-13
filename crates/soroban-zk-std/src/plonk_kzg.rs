@@ -104,6 +104,14 @@ pub fn verify_plonk_kzg(
     // 1. Compute the two G1 points from the batched polynomial arithmetic.
     let (lhs, rhs) = kzg_eval_proof_points(inputs)?;
 
+    // If either side evaluates to identity, by pairing non-degeneracy
+    // e(lhs, srs_g2) == e(rhs, G2_gen) holds iff both sides are identity.
+    let lhs_is_zero = lhs.x == ethnum::u256::ZERO && lhs.y == ethnum::u256::ZERO;
+    let rhs_is_zero = rhs.x == ethnum::u256::ZERO && rhs.y == ethnum::u256::ZERO;
+    if lhs_is_zero || rhs_is_zero {
+        return Ok(lhs_is_zero && rhs_is_zero);
+    }
+
     // 2. The G2 generator (BN254 standard generator).
     let g2_gen = G2Affine::generator();
 
@@ -179,6 +187,12 @@ pub fn verify_plonk_kzg_batch(
     // 1. Fold every proof into the two batched G1 points (single accumulator
     //    pass, no heap allocation).
     let (lhs, rhs) = plonk_batch_verify_points(inputs, batch_seed)?;
+
+    let lhs_is_zero = lhs.x == ethnum::u256::ZERO && lhs.y == ethnum::u256::ZERO;
+    let rhs_is_zero = rhs.x == ethnum::u256::ZERO && rhs.y == ethnum::u256::ZERO;
+    if lhs_is_zero || rhs_is_zero {
+        return Ok(lhs_is_zero && rhs_is_zero);
+    }
 
     // 2. One two-pair check replaces the M individual checks:
     //        e(lhs, [tau]_2) · e(-rhs, G₂) == 1

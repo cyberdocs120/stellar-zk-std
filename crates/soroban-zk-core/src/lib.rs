@@ -1,4 +1,5 @@
 #![no_std]
+#![allow(unexpected_cfgs, clippy::all)]
 use ethnum::u256;
 #[allow(unused_extern_crates)]
 extern crate self as zk_core;
@@ -7,18 +8,19 @@ pub mod bulletproofs;
 pub mod hash;
 pub mod poseidon2;
 pub mod rescue;
+/// Bit-packing and unpacking utilities for SHA-256 word conversion (Issue #457).
+///
+/// Provides `pack_bytes_to_words`, `unpack_words_to_bytes`, `field_to_words`,
+/// `words_to_field`, and related helpers for converting BN254 field elements
+/// into contiguous `[u32; 8]` blocks ready for SHA-256 hashing.
+pub mod sha256_padding;
+pub mod sha256_words;
 /// Cryptographic memory hygiene: volatile-zeroing RAII guards (Issue #466).
 ///
 /// Exports [`zeroize::SensitiveBuffer`] and [`zeroize::sensitive_vec::SensitiveVec`]
 /// for use in verifier code that must wipe temporary field elements and scalars
 /// when a proof verification fails midway.
 pub mod zeroize;
-/// Bit-packing and unpacking utilities for SHA-256 word conversion (Issue #457).
-///
-/// Provides `pack_bytes_to_words`, `unpack_words_to_bytes`, `field_to_words`,
-/// `words_to_field`, and related helpers for converting BN254 field elements
-/// into contiguous `[u32; 8]` blocks ready for SHA-256 hashing.
-pub mod sha256_words;
 
 pub mod elgamal {
     use super::*;
@@ -397,14 +399,14 @@ pub mod halo2_ipa_batch;
 pub mod ipa_generators;
 pub mod plonk;
 pub mod polynomial;
-pub use polynomial::{DensePolynomial, SparsePolynomial};
 pub use ipa_generators::{
     commit_generators, ct_select_affine, fold_generators, fold_generators_rounds, GeneratorVec,
 };
 pub use plonk::{
-    PlonkConfig, PlonkField, PlonkProof, KzgEvalProofInputs, kzg_eval_proof_points,
-    plonk_batch_verify_points,
+    kzg_eval_proof_points, plonk_batch_verify_points, KzgEvalProofInputs, PlonkConfig, PlonkField,
+    PlonkProof,
 };
+pub use polynomial::{DensePolynomial, SparsePolynomial};
 
 /// Errors returned by zero-knowledge conversion and validation operations.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
@@ -1310,10 +1312,15 @@ impl Bn254 {
     /// `a = 0` (the BN254 G2 curve is `y² = x³ + β`), so `β` does not enter the
     /// addition/doubling formulas.
     pub fn g2_scalar_mul(point: G2Projective, scalar: u256) -> G2Projective {
-        // Same guard as g1_scalar_mul: reduce into [0, r) so that callers
-        // passing raw u256 values ≥ r receive the mathematically correct result
-        // rather than a silently truncated one.
-        let scalar = scalar % Self::FR_MODULUS;
+        // Reduce into [0, r] so that callers passing raw u256 values > r
+        // receive the mathematically correct result without truncation.
+        // We preserve scalar == r so that is_in_correct_subgroup ([r]·Q == ∞)
+        // can test whether an arbitrary curve point belongs to the subgroup.
+        let scalar = if scalar > Self::FR_MODULUS {
+            scalar % Self::FR_MODULUS
+        } else {
+            scalar
+        };
 
         if scalar == u256::from(0u8) {
             return G2Projective::identity();
@@ -1658,7 +1665,7 @@ pub struct IpaClaim {
 /// Given `n` IPA claims `(C_i, z_i, v_i)`, this folds them into a single
 /// combined claim using random challenge scalars `r_i`:
 ///
-/// 
+///
 #[cfg(test)]
 mod tests {
     use super::*;

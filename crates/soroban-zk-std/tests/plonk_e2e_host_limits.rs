@@ -160,8 +160,8 @@ mod fixture {
         // E = Σ_{i<k} v^i · f_i(ζ)  +  u · f(ζω), with f(ζω) = 0.
         let mut e_batch = zero();
         let mut v_pow = one();
-        for i in 0..k {
-            e_batch = Bn254::add(e_batch, Bn254::mul(v_pow, evaluations[i]));
+        for &eval in &evaluations[..k] {
+            e_batch = Bn254::add(e_batch, Bn254::mul(v_pow, eval));
             v_pow = Bn254::mul(v_pow, v);
         }
 
@@ -177,7 +177,7 @@ mod fixture {
         let mut commitments = [identity(); MAX_K];
         let mut d_tail = zero();
         let mut v_pow = one();
-        for i in 1..k {
+        for _i in 1..k {
             v_pow = Bn254::mul(v_pow, v);
             d_tail = Bn254::add(d_tail, Bn254::mul(v_pow, u256::from(WITNESS_MULT)));
         }
@@ -411,7 +411,10 @@ fn full_pipeline_fits_one_transaction_with_headroom() {
         Bn254::add(Bn254::mul(one(), one()), Bn254::mul(one(), u256::from(2u8))),
         Bn254::mul(u256::from(u8::MAX), u256::from(3u8)),
     );
-    assert_eq!(gate, expected, "gate residual must match q_L·a + q_R·b + q_O·c");
+    assert_eq!(
+        gate, expected,
+        "gate residual must match q_L·a + q_R·b + q_O·c"
+    );
     let lin = evaluate_linearization(&proof, &challenges, &selectors, &commits, &domain);
     assert!(lin.is_ok(), "linearization errored: {:?}", lin);
 

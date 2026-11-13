@@ -309,11 +309,7 @@ impl<const ROUNDS: usize> IpaVerifierState<ROUNDS> {
         // P' = u^2 · L + P + u^{-2} · R
         let scaled_l = round_comms.l.scalar_mul(challenge.u_sq);
         let scaled_r = round_comms.r.scalar_mul(challenge.u_sq_inv);
-        let p_prime = self
-            .state
-            .folded_commitment
-            .add(&scaled_l)
-            .add(&scaled_r);
+        let p_prime = self.state.folded_commitment.add(&scaled_l).add(&scaled_r);
 
         // Record the challenge in the history before mutating `round_index`.
         let idx = self.state.round_index;
@@ -356,16 +352,14 @@ impl<const ROUNDS: usize> IpaVerifierState<ROUNDS> {
 // Batched IPA verification
 // ---------------------------------------------------------------------------
 
-/// A batched IPA verifier that folds `k` independent proofs (all sharing the
-/// same `ROUNDS = log2(n)`) into a single randomized linear combination.
-///
-/// ### Why this saves gas
-///
-/// Verifying `k` IPA proofs naively costs `k` terminal multi-scalar
-/// multiplications over `G'`, `H'`, and `U`. By drawing independent
-/// Fiat-Shamir challenges `ρ_j` and accumulating
-///
-/// 
+// A batched IPA verifier that folds `k` independent proofs (all sharing the
+// same `ROUNDS = log2(n)`) into a single randomized linear combination.
+//
+// ### Why this saves gas
+//
+// Verifying `k` IPA proofs naively costs `k` terminal multi-scalar
+// multiplications over `G'`, `H'`, and `U`. By drawing independent
+// Fiat-Shamir challenges `ρ_j` and accumulating.
 
 // ---------------------------------------------------------------------------
 // Tests
@@ -553,10 +547,7 @@ mod tests {
         let c = IpaRoundChallenge::from_scalar(u_raw).unwrap();
 
         // Manual: P' = u^2·L + P + u^{-2}·R
-        let expected = l
-            .scalar_mul(c.u_sq)
-            .add(&p)
-            .add(&r.scalar_mul(c.u_sq_inv));
+        let expected = l.scalar_mul(c.u_sq).add(&p).add(&r.scalar_mul(c.u_sq_inv));
 
         let mut vs = IpaVerifierState::<1>::new(p, 2).unwrap();
         vs.apply_round(IpaRoundCommitments::new(l, r), c).unwrap();

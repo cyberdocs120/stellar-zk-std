@@ -397,8 +397,8 @@ mod tests {
     /// Build a `GeneratorVec<N>` filled with distinct test points.
     fn test_vec<const N: usize>(offset: u64) -> GeneratorVec<N> {
         let mut pts = [IDENTITY; N];
-        for i in 0..N {
-            pts[i] = test_point(offset + i as u64 + 1);
+        for (i, pt) in pts.iter_mut().enumerate() {
+            *pt = test_point(offset + i as u64 + 1);
         }
         GeneratorVec::new(pts)
     }
@@ -541,10 +541,16 @@ mod tests {
 
         for i in 0..2usize {
             let expected_g = g.points[i].add(&g.points[2 + i]);
-            assert_eq!(gf.points[i], expected_g, "g_fold[{i}] with x=1 should be sum");
+            assert_eq!(
+                gf.points[i], expected_g,
+                "g_fold[{i}] with x=1 should be sum"
+            );
 
             let expected_h = h.points[i].add(&h.points[2 + i]);
-            assert_eq!(hf.points[i], expected_h, "h_fold[{i}] with x=1 should be sum");
+            assert_eq!(
+                hf.points[i], expected_h,
+                "h_fold[{i}] with x=1 should be sum"
+            );
         }
     }
 
@@ -624,7 +630,10 @@ mod tests {
         let challenges = [u256::from(2u8), u256::from(7u8), u256::from(11u8)];
         // log2(8) == 3 → 3 challenges needed.
         let result = fold_generators_rounds(&g, &h, &challenges);
-        assert!(result.is_ok(), "folding N=8 with 3 challenges should succeed");
+        assert!(
+            result.is_ok(),
+            "folding N=8 with 3 challenges should succeed"
+        );
         let (gf, hf) = result.unwrap();
         // Final points must be valid curve points (non-identity for these inputs).
         assert!(Bn254::is_valid_g1(gf.x, gf.y), "final g should be on curve");

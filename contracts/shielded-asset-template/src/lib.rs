@@ -3,11 +3,11 @@
 use ethnum::u256;
 use soroban_sdk::{contract, contractimpl, contracttype, Address, Bytes, Env, String};
 use soroban_zk_core::G1Affine;
+use soroban_zk_std::events::{
+    publish_verification_event, ZkFailureContext, ZkVerificationEvent, ZkVerificationStage,
+};
 use soroban_zk_std::groth16::{groth16_verify, Groth16Proof, Groth16VerifyingKey};
 use soroban_zk_std::pairing::G2Affine;
-use soroban_zk_std::events::{
-    ZkVerificationEvent, ZkVerificationStage, ZkFailureContext, publish_verification_event
-};
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -62,7 +62,7 @@ impl ShieldedAsset {
             panic!("Invalid proof length");
         }
         proof_bytes.copy_into_slice(&mut proof_buf);
-        
+
         let proof = match Groth16Proof::from_bytes(&proof_buf) {
             Ok(p) => p,
             Err(_) => {
@@ -75,7 +75,10 @@ impl ShieldedAsset {
                     false,
                     &soroban_zk_std::ZkContractError::DeserializationError,
                     ZkVerificationStage::ProofDeserialization,
-                    Some(ZkFailureContext::with_info(&env, "Invalid proof format or curve points")),
+                    Some(ZkFailureContext::with_info(
+                        &env,
+                        "Invalid proof format or curve points",
+                    )),
                 );
                 publish_verification_event(&env, event);
                 panic!("Invalid proof format");
@@ -130,7 +133,8 @@ impl ShieldedAsset {
             public_inputs_count,
             proof_length,
             false,
-        ).with_context(&env, "Shielded transfer verified successfully");
+        )
+        .with_context(&env, "Shielded transfer verified successfully");
         publish_verification_event(&env, success_event);
 
         // Update the encrypted balances via Homomorphic Addition
@@ -138,8 +142,10 @@ impl ShieldedAsset {
 
         // Additional legacy event for backward compatibility
         #[allow(deprecated)]
-        env.events()
-            .publish((sender, receiver), String::from_str(&env, "Shielded Transfer Verified"));
+        env.events().publish(
+            (sender, receiver),
+            String::from_str(&env, "Shielded Transfer Verified"),
+        );
     }
 }
 
