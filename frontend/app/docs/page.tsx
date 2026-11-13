@@ -71,7 +71,7 @@ export default function DocsPage() {
 
         <CodeBlock
           code={`[dependencies]
-soroban-zk-std = { git = "https://github.com/georgegoldman/Soroban-ZK-Std" }`}
+soroban-zk-std = { git = "https://github.com/cyberdocs120/stellar-zk-std" }`}
           language="toml"
           filename="Cargo.toml"
           showLineNumbers={false}

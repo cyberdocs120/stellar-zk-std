@@ -87,7 +87,7 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
           
           {/* GitHub Link */}
           <a
-            href="https://github.com/georgegoldman/Soroban-ZK-Std"
+            href="https://github.com/cyberdocs120/stellar-zk-std"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 rounded-lg text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-150"

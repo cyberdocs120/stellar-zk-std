@@ -16,4 +16,4 @@ Implements Issue #18.
 - 13 tests: round-trip identity, boundary values, rejection of inputs ≥ modulus.
 - No heap allocation — fixed `[u8; 32]` arrays, snarkjs/circom big-endian compatible.
 
-[View commit ffbd41a](https://github.com/zeemscript/Soroban-ZK-Std/commit/ffbd41aa573c1eb1f004fb685f213bf0b5da0033)
+[View commit ffbd41a](https://github.com/cyberdocs120/stellar-zk-std/commit/ffbd41aa573c1eb1f004fb685f213bf0b5da0033)

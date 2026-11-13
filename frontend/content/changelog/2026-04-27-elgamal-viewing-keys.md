@@ -12,4 +12,4 @@ Implements Issue #5. Adds ElGamal viewing-key infrastructure and a complete
 `shielded-asset-template` contract demonstrating configurable privacy on
 Stellar Protocol 25.
 
-[View commit 4e3f379](https://github.com/zeemscript/Soroban-ZK-Std/commit/4e3f379c9d18b203f3b930a1eac5be309c7b9037)
+[View commit 4e3f379](https://github.com/cyberdocs120/stellar-zk-std/commit/4e3f379c9d18b203f3b930a1eac5be309c7b9037)

@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 async function fetchVersions() {
   try {
     console.log('Fetching tags from GitHub...');
-    const response = await fetch('https://api.github.com/repos/georgegoldman/Soroban-ZK-Std/tags', {
+    const response = await fetch('https://api.github.com/repos/cyberdocs120/stellar-zk-std/tags', {
       headers: { 'User-Agent': 'Soroban-ZK-Docs-Script' }
     });
     

@@ -11,4 +11,4 @@ tags: ["crypto", "bn254", "legendre", "quadratic-residue", "soroban-zk-core"]
 Implements Issue #16. Legendre Symbol computation over BN254 Fr/Fq,
 used for quadratic-residue tests (prerequisite for square root).
 
-[View commit 31792d6](https://github.com/zeemscript/Soroban-ZK-Std/commit/31792d68c8a9de5ef6a56087fcc7bcbf1b2ef11a)
+[View commit 31792d6](https://github.com/cyberdocs120/stellar-zk-std/commit/31792d68c8a9de5ef6a56087fcc7bcbf1b2ef11a)

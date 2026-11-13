@@ -142,4 +142,4 @@ This library is foundational infrastructure. Beyond compliant stablecoins, you c
 
 ## Learn More
 
-For complete documentation, contributing guidelines, and more examples, please visit the [Main Repository on GitHub](https://github.com/georgegoldman/Soroban-ZK-Std).
+For complete documentation, contributing guidelines, and more examples, please visit the [Main Repository on GitHub](https://github.com/cyberdocs120/stellar-zk-std).

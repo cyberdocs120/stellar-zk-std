@@ -11,4 +11,4 @@ tags: ["crypto", "constant-time", "inversion", "soroban-zk-core"]
 Implements Issue #8. Constant-time Fermat-based modular inversion in `soroban-zk-core`,
 safe for use in WASM environments without variable-time branches.
 
-[View commit dbc26d5](https://github.com/zeemscript/Soroban-ZK-Std/commit/dbc26d5f15155263879b68144ba700a11a94f6f9)
+[View commit dbc26d5](https://github.com/cyberdocs120/stellar-zk-std/commit/dbc26d5f15155263879b68144ba700a11a94f6f9)

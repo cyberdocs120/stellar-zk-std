@@ -139,7 +139,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           {/* External Links */}
           <div className="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-800">
             <a
-              href="https://github.com/georgegoldman/Soroban-ZK-Std"
+              href="https://github.com/cyberdocs120/stellar-zk-std"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors duration-150 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white"

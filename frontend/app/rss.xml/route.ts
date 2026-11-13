@@ -18,7 +18,7 @@ const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://soroban-zk-std.dev').replace(/\/$/, '');
 
 const FEED_URL = `${SITE_URL}/rss.xml`;
-const GITHUB_REPO = 'https://github.com/zeemscript/Soroban-ZK-Std';
+const GITHUB_REPO = 'https://github.com/cyberdocs120/stellar-zk-std';
 
 /** Escape characters that are special in XML. */
 function escapeXml(str: string): string {

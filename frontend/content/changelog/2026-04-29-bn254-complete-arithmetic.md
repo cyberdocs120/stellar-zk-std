@@ -18,4 +18,4 @@ Closes #9, #12, #17, #20, #21. Major arithmetic milestone for `soroban-zk-core`:
 - `ElGamalCiphertext` API synchronised with `shielded-asset-template`.
 - 100% passing tests and successful WASM target compilation.
 
-[View commit a63a47d](https://github.com/zeemscript/Soroban-ZK-Std/commit/a63a47d6b40da1ae9b14ed53ee26dbee7e813372)
+[View commit a63a47d](https://github.com/cyberdocs120/stellar-zk-std/commit/a63a47d6b40da1ae9b14ed53ee26dbee7e813372)

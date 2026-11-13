@@ -14,4 +14,4 @@ Implements Issue #2. Poseidon2 sponge over BN254 Fr (t=3, rate=2, capacity=1):
 - `hash_to_field()` compatible with Noir/Circom Poseidon2 constraints.
 - KAT verified against `soroban-env-host-25.0.1`.
 
-[View commit 65feaed](https://github.com/zeemscript/Soroban-ZK-Std/commit/65feaed6e0bf7646c619973bc7062a190b9ac8ba)
+[View commit 65feaed](https://github.com/cyberdocs120/stellar-zk-std/commit/65feaed6e0bf7646c619973bc7062a190b9ac8ba)

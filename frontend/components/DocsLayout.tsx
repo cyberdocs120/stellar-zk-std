@@ -12,7 +12,7 @@ interface DocsLayoutProps {
 }
 
 const REPO_EDIT_BASE =
-  "https://github.com/georgegoldman/Soroban-ZK-Std/edit/main/frontend/app";
+  "https://github.com/cyberdocs120/stellar-zk-std/edit/main/frontend/app";
 
 export function DocsLayout({ children }: DocsLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);

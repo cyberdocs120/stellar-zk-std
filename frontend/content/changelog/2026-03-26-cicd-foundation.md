@@ -14,4 +14,4 @@ Establishes the CI/CD foundation for the project:
 - `ZkEnv` trait architecture separating host-environment concerns from pure cryptographic logic.
 - `deny.toml` for license compliance (Apache-2.0 / MIT).
 
-[View commit c86d671](https://github.com/zeemscript/Soroban-ZK-Std/commit/c86d67116c1f5b60ec2cc98f8a47667d920554dd)
+[View commit c86d671](https://github.com/cyberdocs120/stellar-zk-std/commit/c86d67116c1f5b60ec2cc98f8a47667d920554dd)

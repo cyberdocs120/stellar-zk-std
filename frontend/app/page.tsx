@@ -14,8 +14,8 @@ export default function Home() {
             <nav className="hidden sm:flex space-x-5 text-sm font-medium text-gray-600 dark:text-gray-400">
               <a href="/docs" className="hover:text-black dark:hover:text-white transition-colors">guides</a>
               <a href="/tools/gas-calculator" className="hover:text-black dark:hover:text-white transition-colors">tools</a>
-              <a href="https://github.com/georgegoldman/Soroban-ZK-Std/pulls" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">contrib</a>
-              <a href="https://github.com/georgegoldman/Soroban-ZK-Std" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">source</a>
+              <a href="https://github.com/cyberdocs120/stellar-zk-std/pulls" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">contrib</a>
+              <a href="https://github.com/cyberdocs120/stellar-zk-std" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">source</a>
               <a href="https://t.me/SorobanZKStd" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">community</a>
             </nav>
           </div>
@@ -37,7 +37,7 @@ export default function Home() {
           <a href="/docs" className="px-6 py-2.5 bg-black text-white dark:bg-white dark:text-black font-semibold rounded hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors">
             Guides
           </a>
-          <a href="https://github.com/georgegoldman/Soroban-ZK-Std" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 border border-gray-300 dark:border-gray-700 font-semibold rounded hover:bg-gray-50 dark:hover:bg-[#222] transition-colors">
+          <a href="https://github.com/cyberdocs120/stellar-zk-std" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 border border-gray-300 dark:border-gray-700 font-semibold rounded hover:bg-gray-50 dark:hover:bg-[#222] transition-colors">
             Source
           </a>
         </div>
@@ -121,7 +121,7 @@ export default function Home() {
       <footer className="border-t border-gray-200 dark:border-[#333] transition-colors duration-300">
         <div className="max-w-5xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
           <p>© 2026 Soroban-ZK-Std | Built by <a href="https://neslabs.io/" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">Neslabs</a></p>
-          <a href="https://github.com/georgegoldman/Soroban-ZK-Std" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors mt-4 md:mt-0">
+          <a href="https://github.com/cyberdocs120/stellar-zk-std" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors mt-4 md:mt-0">
             Edit on GitHub
           </a>
         </div>

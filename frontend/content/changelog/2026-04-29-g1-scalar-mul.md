@@ -15,4 +15,4 @@ Closes #12. Implements `g1_scalar_mul` over BN254 G1:
 - Edge-case handling for scalar = 0 (identity) and scalar = 1.
 - Test suite: group order identity, multiplicative identity, doubling consistency.
 
-[View commit 1a0ddcd](https://github.com/zeemscript/Soroban-ZK-Std/commit/1a0ddcd20600e1a6538749b458cf67a9b4f6003d)
+[View commit 1a0ddcd](https://github.com/cyberdocs120/stellar-zk-std/commit/1a0ddcd20600e1a6538749b458cf67a9b4f6003d)

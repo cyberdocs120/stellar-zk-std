@@ -33,7 +33,7 @@ This is foundational infrastructure for the Stellar ecosystem. It empowers devel
 Add this to your `Cargo.toml`:
 ```toml
 [dependencies]
-zk-soroban = { git = "https://github.com/georgegoldman/Soroban-ZK-Std" }
+zk-soroban = { git = "https://github.com/cyberdocs120/stellar-zk-std" }
 ```
 
 ## 🛠️ Contributing to Soroban-ZK-Std
@@ -59,8 +59,8 @@ You must have the following installed:
 
 Clone the repo and run the master check to ensure your environment is compatible:
 ```bash
-git clone https://github.com/georgegoldman/Soroban-ZK-Std.git
-cd Soroban-ZK-Std
+git clone https://github.com/cyberdocs120/stellar-zk-std.git
+cd stellar-zk-std
 make all
 ```
 
@@ -80,7 +80,7 @@ If you are adding a new mathematical primitive (e.g., a new Curve), it goes in `
 ### 📥 How to Add Your Code
 
 1. **Claim an Issue**
-Check the [Issues](https://github.com/georgegoldman/Soroban-ZK-Std/issues) tab for "Good First Issues" or "Stellar Wave Bounties." Comment on the issue to be assigned.
+Check the [Issues](https://github.com/cyberdocs120/stellar-zk-std/issues) tab for "Good First Issues" or "Stellar Wave Bounties." Comment on the issue to be assigned.
 
 2. **Implementation Rules**
 
