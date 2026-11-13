@@ -93,6 +93,15 @@ pub fn evaluate_arithmetic_gate(
     b: u256,
     c: u256,
 ) -> u256 {
+    let q_l = q_l % Bn254::FR_MODULUS;
+    let q_r = q_r % Bn254::FR_MODULUS;
+    let q_o = q_o % Bn254::FR_MODULUS;
+    let q_m = q_m % Bn254::FR_MODULUS;
+    let q_c = q_c % Bn254::FR_MODULUS;
+    let a = a % Bn254::FR_MODULUS;
+    let b = b % Bn254::FR_MODULUS;
+    let c = c % Bn254::FR_MODULUS;
+
     // 1. q_L * a
     let term_l = Bn254::mul(q_l, a);
 
